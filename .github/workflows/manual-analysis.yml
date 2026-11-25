@@ -1,0 +1,152 @@
+name: Verify email campaign analysis
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-analysis:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.3.3"
+          use-public-rspm: true
+
+      - name: Download data, run analysis, and verify results
+        shell: Rscript {0}
+        run: |
+          # Preserve the committed dashboard results.
+          output_file <- "power_bi_exports/campaign_effect frag.csv"
+          output_file <- "power_bi_exports/campaign_effects.csv"
+          published <- read.csv(
+            output_file,
+            stringsAsFactors = FALSE
+          )
+
+          # Download the documented dataset.
+          dir.create(
+            "data/raw",
+            recursive = TRUE,
+            showWarnings = FALSE
+          )
+
+          download.file(
+            "https://hillstorm1.s3.us-east-2.amazonaws.com/hillstorm_no_indices.csv.gz",
+            "data/raw/hillstrom.csv.gz",
+            mode = "wb"
+          )
+
+          # Prepare the input expected by analysis.R.
+          raw_data <- read.csv("data/raw/hillstrom.csv.gz")
+          write.csv(
+            raw_data,
+            "data/raw/hillstrom.csv",
+            row.names = FALSE
+          )
+
+          # Regenerate the dashboard results.
+          source("analysis.R")
+          fresh <- read.csv(
+            output_file,
+            stringsAsFactors = FALSE
+          )
+
+          # Align comparisons using outcome and campaign.
+          align_results <- function(x) {
+            key <- paste(x$outcome_role, x$campaign, sep = "::")
+            stopifnot(!anyDuplicated(key))
+            x <- x[order(key), ]
+            rownames(x) <- NULL
+            x
+          }
+
+          published <- align_results(published)
+          fresh <- align_results(fresh)
+
+          # Check the four expected comparisons.
+          expected_keys <- sort(c(
+            "Primary::Mens E-Mail",
+            "Primary::Womens E-Mail",
+            "Secondary::Mens E-Mail",
+            "Secondary::Womens E-Mail"
+          ))
+
+          actual_keys <- paste(
+            fresh$outcome_role,
+            fresh$campaign,
+            sep = "::"
+          )
+
+          stopifnot(
+            nrow(fresh) == 4L,
+            identical(actual_keys, expected_keys),
+            identical(names(published), names(fresh))
+          )
+
+          # Compare every exported column.
+          column_checks <- vapply(names(published), function(column) {
+            isTRUE(all.equal(
+              published[[column]],
+              fresh[[column]],
+              tolerance = 1e-12
+            ))
+          }, logical(1))
+
+          print(column_checks)
+          stopifnot(all(column_checks))
+
+          # Verify primary conversion definitions.
+          primary <- fresh[fresh$outcome_role == "Primary", ]
+          stopifnot(
+            all(primary$outcome == "Purchase conversion"),
+            all(primary$effect_unit == "Percentage points")
+          )
+
+          # Verify secondary spending definitions.
+          secondary <- fresh[fresh$outcome_role == "Secondary", ]
+          stopifnot(
+            all(secondary$outcome == "Spend per assigned customer"),
+            all(secondary$effect_unit == "Dollars per customer")
+          )
+
+          # Save verification evidence.
+          dir.create("validation", showWarnings = FALSE)
+
+          write.csv(
+            data.frame(
+              column = names(column_checks),
+              matches = unname(column_checks)
+            ),
+            "validation/export-comparison.csv",
+            row.names = FALSE
+          )
+
+          writeLines(
+            capture.output(sessionInfo()),
+            "validation/r-session-info.txt"
+          )
+
+          message("Primary conversion results verified.")
+          message("Secondary spending results verified.")
+          message("All four dashboard results match the committed CSV.")
+
+      - name: Upload verified results
+        uses: actions/upload-artifact@v7
+        with:
+          name: verified-campaign-results
+          path: |
+            power_bi_exports/campaign_effects.csv
+            validation/
+          if-no-files-found: error
+          retention-days: 7
