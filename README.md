@@ -76,3 +76,12 @@ number generator settings.
 
 See [dataset provenance](metadata/data-source.md) for the source,
 experiment design, and variable definitions.
+
+
+### Validation
+
+A fresh-download test reproduced all four dashboard results,
+with primary conversion and secondary spending results checked
+separately.
+
+See the [fresh-download validation record](metadata/fresh-download-validation.md).
