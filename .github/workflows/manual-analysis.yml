@@ -27,7 +27,7 @@ jobs:
         shell: Rscript {0}
         run: |
           # Preserve the committed dashboard results.
-          output_file <- "power_bi_exports/campaign_effect frag.csv"
+          # output_file <- "power_bi_exports/campaign_effect frag.csv"
           output_file <- "power_bi_exports/campaign_effects.csv"
           published <- read.csv(
             output_file,
