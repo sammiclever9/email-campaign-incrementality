@@ -91,6 +91,26 @@ See the [fresh-download validation record](metadata/fresh-download-validation.md
 The [R session information](metadata/r-session-info.txt) records
 the environment used for the local validation.
 
+### GitHub Actions verification
+
+The manually triggered workflow runs analysis.R using R 4.3.3
+on Ubuntu 22.04.
+
+It verifies two primary conversion comparisons and two secondary
+spending comparisons, then checks every exported column against
+the committed dashboard CSV using numeric tolerance 1e-12.
+
+Two manual runs completed successfully.
+
+[View the second successful run](https://github.com/sammiclever9/email-campaign-incrementality/actions/runs/45603662463).
+
+Successful runs provide a verified-campaign-results artifact
+containing the regenerated CSV, comparison checks, and R session
+information. Artifacts are retained for seven days.
+
+To run it, open Actions → Verify email campaign analysis →
+Run workflow, select main, and confirm.
+
 ### Reconnect and refresh the Power BI report
 
 1. Download and extract the repository ZIP.
