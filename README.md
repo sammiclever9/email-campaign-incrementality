@@ -88,9 +88,6 @@ See the [fresh-download validation record](metadata/fresh-download-validation.md
 
 [Download the editable Power BI report](email-campaign-dashboard.pbix)
 
-Open the downloaded file in Power BI Desktop. Reconnect its CSV
-source to your local power_bi_exports/campaign_effects.csv, then
-refresh the report.
 
 ### Reconnect and refresh the Power BI report
 
