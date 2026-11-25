@@ -88,6 +88,8 @@ See the [fresh-download validation record](metadata/fresh-download-validation.md
 
 [Download the editable Power BI report](email-campaign-dashboard.pbix)
 
+The [R session information](metadata/r-session-info.txt) records
+the environment used for the local validation.
 
 ### Reconnect and refresh the Power BI report
 
