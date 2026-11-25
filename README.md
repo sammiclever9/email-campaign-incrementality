@@ -104,6 +104,14 @@ Two manual runs completed successfully.
 
 [View the second successful run](https://github.com/sammiclever9/email-campaign-incrementality/actions/runs/45603662463).
 
+Permanent verification evidence is saved in the repository:
+
+- [Export comparison checks](metadata/github-actions-validation/export-comparison.csv) — all 12 exported columns matched across the two primary conversion and two secondary spending results.
+- [GitHub runner R session information](metadata/github-actions-validation/r-session-info.txt) — R 4.3.3 on Ubuntu 22.04.5 LTS.
+
+These saved records remain available after the temporary workflow
+artifact expires.
+
 Successful runs provide a verified-campaign-results artifact
 containing the regenerated CSV, comparison checks, and R session
 information. Artifacts are retained for seven days.
