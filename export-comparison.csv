@@ -1,0 +1,13 @@
+"column","matches"
+"outcome_role",TRUE
+"outcome",TRUE
+"campaign",TRUE
+"effect_unit",TRUE
+"effect",TRUE
+"lower_95",TRUE
+"upper_95",TRUE
+"p_holm",TRUE
+"ci_method",TRUE
+"comparison",TRUE
+"adjustment_family",TRUE
+"reject_equal_outcomes",TRUE
