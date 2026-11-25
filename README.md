@@ -91,3 +91,45 @@ See the [fresh-download validation record](metadata/fresh-download-validation.md
 Open the downloaded file in Power BI Desktop. Reconnect its CSV
 source to your local power_bi_exports/campaign_effects.csv, then
 refresh the report.
+
+### Reconnect and refresh the Power BI report
+
+1. Download and extract the repository ZIP.
+2. Open email-campaign-dashboard.pbix in Power BI Desktop.
+3. Select File → Options and settings → Data source settings.
+4. Under Data sources in current file, select the CSV source.
+5. Click Change Source → Browse.
+6. Select power_bi_exports/campaign_effects.csv from your
+   extracted repository folder.
+7. Click OK, then Close. Apply pending changes if prompted.
+8. Select Home → Refresh.
+9. Verify both charts, then save the report.
+
+If Change Source is unavailable, select Home → Transform data,
+choose the campaign query, and use the gear beside its Source
+step to update the CSV path. Select Close & Apply afterward.
+
+### Verify the refreshed results
+
+Primary outcome — purchase conversion:
+- Mens E-Mail: +0.681 percentage points, individual 95% CI
+  0.500 to 0.861.
+- Womens E-Mail: +0.311 percentage points, individual 95% CI
+  0.150 to 0.472.
+
+Secondary outcome — spend per assigned customer:
+- Mens E-Mail: +$0.770, individual 95% bootstrap CI
+  $0.492 to $1.070.
+- Womens E-Mail: +$0.424, individual 95% bootstrap CI
+  $0.167 to $0.672.
+
+All effects compare the campaign with the no-email control.
+Spending includes every assigned customer, including those
+who spent zero.
+
+Power BI refresh reloads the exported estimates. To recalculate
+the statistical results, run analysis.R before refreshing.
+
+The CSV reconnection and refresh were tested locally.
+Both charts matched the verified R export.
+
