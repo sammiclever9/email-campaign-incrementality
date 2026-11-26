@@ -132,6 +132,16 @@ Pull-request and post-merge verification were also tested:
 Both runs checked the two primary conversion results and two
 secondary spending results against the committed dashboard CSV.
 
+### Controlled failure test
+
+[Pull request #2](https://github.com/sammiclever9/email-campaign-incrementality/pull/2)
+intentionally changed one primary conversion estimate while
+leaving secondary spending unchanged.
+
+The analysis completed, but export verification detected the
+incorrect effect and failed as expected. The test change was
+closed without merging.
+
 ### Reconnect and refresh the Power BI report
 
 1. Download and extract the repository ZIP.
