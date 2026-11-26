@@ -93,8 +93,13 @@ the environment used for the local validation.
 
 ### GitHub Actions verification
 
-The manually triggered workflow runs analysis.R using R 4.3.3
-on Ubuntu 22.04.
+The workflow runs analysis.R using R 4.3.3 on Ubuntu 22.04.
+
+It runs automatically for pushes to main and pull requests
+targeting main when analysis.R, the dashboard CSV, or the
+workflow file changes. Manual execution remains available.
+
+[View the successful automatic push run](https://github.com/sammiclever9/email-campaign-incrementality/actions/runs/45746036276).
 
 It verifies two primary conversion comparisons and two secondary
 spending comparisons, then checks every exported column against
