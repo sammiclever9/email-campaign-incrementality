@@ -1,4 +1,4 @@
-# Email campaign incrementality analysis.
+# Primary conversion and secondary spending versus no-email control.
 # Run from the project folder.
 
 input_file <- file.path("data", "raw", "hillstrom.csv")
