@@ -124,6 +124,14 @@ information. Artifacts are retained for seven days.
 To run it, open Actions → Verify email campaign analysis →
 Run workflow, select main, and confirm.
 
+Pull-request and post-merge verification were also tested:
+
+- [Pull request #1](https://github.com/sammiclever9/email-campaign-incrementality/pull/1) passed verification before merging.
+- [Post-merge run on main](https://github.com/sammiclever9/email-campaign-incrementality/actions/runs/45747933694) passed automatically after merging.
+
+Both runs checked the two primary conversion results and two
+secondary spending results against the committed dashboard CSV.
+
 ### Reconnect and refresh the Power BI report
 
 1. Download and extract the repository ZIP.
